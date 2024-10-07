@@ -2,22 +2,29 @@
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão de Pessoas</title>
     <link rel="shortcut icon" href="assets/img/icones-de-pessoas.png" type="image/x-icon">
+
+    <!-- Fonte Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- Adiciona Bootstrap para estilo e layout -->
+
+    <!-- Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
+        /* Estilos gerais */
         body {
             font-family: 'Poppins', sans-serif;
-            background: url('assets/img/monochromatic-background.jpg') no-repeat center center fixed; /* Substitua 'sua_imagem_de_fundo.jpg' pelo caminho da sua imagem */
+            background: url('assets/img/monochromatic-background.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #333;
         }
 
+        /* Container principal com fundo translúcido */
         .container {
             background-color: rgba(255, 255, 255, 0.8); /* Fundo branco translúcido para o conteúdo */
             padding: 20px;
@@ -35,6 +42,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
+        /* Botões e headers personalizados */
         .card-header {
             background-color: #db0b8a;
             color: #fff;
@@ -45,7 +53,7 @@
             border-color: #702271;
             transition: background-color 0.3s, border-color 0.3s;
         }
-
+        
         .btn-success {
             background-color: #702271;
             border-color: #702271;
@@ -79,6 +87,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1 class="text-center my-4">Gestão de Pessoas</h1>
@@ -142,7 +151,7 @@
                 if ($resultado->num_rows > 0) {
                     // Exibe os resultados encontrados e coloca botões de edição para cada um
                     $resultadoBusca = "<h2>Resultados da busca por '$nomeBusca':</h2><ul class='list-group'>";
-                    while($row = $resultado->fetch_assoc()) {
+                    while ($row = $resultado->fetch_assoc()) {
                         $resultadoBusca .= "<li class='list-group-item'>ID: " . $row["id"] . " | Nome: " . $row["nome"] . " | Idade: " . $row["idade"];
                         $resultadoBusca .= "
                         <form style='display:inline;' method='post' action='index.php'>
@@ -173,12 +182,14 @@
 
                             <div class="form-group">
                                 <label for="nome">Nome:</label>
-                                <input type="text" id="nome" name="nome" class="form-control" value="<?php echo $nomeAtual; ?>" required>
+                                <input type="text" id="nome" name="nome" class="form-control"
+                                    value="<?php echo $nomeAtual; ?>" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="idade">Idade:</label>
-                                <input type="number" id="idade" name="idade" class="form-control" value="<?php echo $idadeAtual; ?>" required>
+                                <input type="number" id="idade" name="idade" class="form-control"
+                                    value="<?php echo $idadeAtual; ?>" required>
                             </div>
 
                             <button type="submit" name="salvar" class="btn btn-success btn-block">
@@ -209,7 +220,7 @@
         </div>
 
         <!-- Exibe o resultado da busca com opção de editar -->
-        <?php if (!empty($resultadoBusca)) : ?>
+        <?php if (!empty($resultadoBusca)): ?>
             <div class="mt-4">
                 <?php echo $resultadoBusca; ?>
             </div>
@@ -217,9 +228,14 @@
 
     </div>
 
-    <!-- JavaScript do Bootstrap -->
+    <!-- Bibliotecas JavaScript necessárias para o Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
+</html>
+
+</body>
+
 </html>
