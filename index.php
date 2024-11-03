@@ -26,7 +26,8 @@
 
         /* Container principal com fundo translúcido */
         .container {
-            background-color: rgba(255, 255, 255, 0.8); /* Fundo branco translúcido para o conteúdo */
+            background-color: rgba(255, 255, 255, 0.8);
+            /* Fundo branco translúcido para o conteúdo */
             padding: 20px;
             margin-top: 50px;
             border-radius: 8px;
@@ -53,7 +54,7 @@
             border-color: #702271;
             transition: background-color 0.3s, border-color 0.3s;
         }
-        
+
         .btn-success {
             background-color: #702271;
             border-color: #702271;
@@ -99,7 +100,7 @@
         $idadeAtual = '';
         $resultadoBusca = '';
 
-        // Ação para salvar ou atualizar
+        // Ação para salvar, atualizar e excluir
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Salvando ou atualizando registro
             if (isset($_POST['salvar'])) {
@@ -123,7 +124,7 @@
                     } else {
                         echo "<div class='alert alert-danger'>Erro ao atualizar: " . $conn->error . "</div>";
                     }
-                }
+                } 
             }
 
             // Carregar registro para edição
@@ -140,6 +141,17 @@
                 }
             }
 
+            if (isset($_POST['excluir'])) {
+                $idPessoa = $_POST['idPessoa']; // Identifica o ID do item que queremos excluir
+                $sqlDelete = "DELETE FROM pessoas WHERE id = $idPessoa";
+                if ($conn->query($sqlDelete) === TRUE) {
+                    echo "<div class='alert alert-success'>Registro excluído com sucesso!</div>";
+                } else {
+                    echo "<div class='alert alert-danger'>Erro ao excluir: " . $conn->error . "</div>";
+                }
+            }
+
+
             // Localizar registro
             if (isset($_POST['buscar'])) {
                 $nomeBusca = $_POST['nomeBusca'];
@@ -150,17 +162,28 @@
 
                 if ($resultado->num_rows > 0) {
                     // Exibe os resultados encontrados e coloca botões de edição para cada um
+                    // Exibe os resultados encontrados e coloca botões de edição e exclusão para cada um
                     $resultadoBusca = "<h2>Resultados da busca por '$nomeBusca':</h2><ul class='list-group'>";
                     while ($row = $resultado->fetch_assoc()) {
                         $resultadoBusca .= "<li class='list-group-item'>ID: " . $row["id"] . " | Nome: " . $row["nome"] . " | Idade: " . $row["idade"];
+                        // Botão de Editar
                         $resultadoBusca .= "
-                        <form style='display:inline;' method='post' action='index.php'>
-                            <input type='hidden' name='idPessoa' value='" . $row["id"] . "'>
-                            <input type='submit' name='editar' value='Editar' class='btn btn-warning btn-sm ml-3'>
-                        </form>
-                        </li>";
+    <form style='display:inline;' method='post' action='index.php'>
+        <input type='hidden' name='idPessoa' value='" . $row["id"] . "'>
+        <input type='submit' name='editar' value='Editar' class='btn btn-warning btn-sm ml-3'>
+    </form>";
+
+                        // Botão de Excluir
+                        $resultadoBusca .= "
+    <form style='display:inline;' method='post' action='index.php' onsubmit='return confirm(\"Tem certeza que deseja excluir esta pessoa?\");'>
+        <input type='hidden' name='idPessoa' value='" . $row["id"] . "'>
+        <input type='submit' name='excluir' value='Excluir' class='btn btn-danger btn-sm ml-2'>
+    </form>";
+
+                        $resultadoBusca .= "</li>";
                     }
                     $resultadoBusca .= "</ul>";
+
                 } else {
                     $resultadoBusca = "<div class='alert alert-info'>Nenhuma pessoa encontrada com o nome que contenha '$nomeBusca'.</div>";
                 }
@@ -170,7 +193,7 @@
 
         <!-- Utiliza o grid do Bootstrap para colocar os formulários lado a lado -->
         <div class="row">
-            <!-- Formulário de Salvar/Editar Pessoa -->
+            <!-- Formulário de Salvar//Deletar Pessoa -->
             <div class="col-md-6 mb-3">
                 <div class="card form-container">
                     <div class="card-header">
